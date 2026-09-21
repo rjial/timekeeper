@@ -31,6 +31,7 @@ Confirmed capabilities:
 - Single global timer — one live timer for the whole app. No rooms, no multi-stage, no queued agenda.
 - Two surfaces: an **operator console** and a **full-screen display**.
 - Operator controls: start / pause / reset; live adjust (+/- minutes) mid-run; send a short message/cue to the display (e.g. "wrap up").
+- Time of day on both surfaces, corrected by the server offset. Added after the first round, where the owner had asked for the display to carry the count only; it is kept small there so it cannot compete with the count.
 - Overrun: at zero the timer does not stop — it counts up past zero in a warning state.
 
 Confirmed constraints:

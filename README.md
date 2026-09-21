@@ -162,3 +162,10 @@ The tradeoff against Cloudflare Pages: GitHub Pages has no free custom-domain
 password protection and is always public. That does not weaken the timer — the
 gate is in the database, not the page — but the display URL is guessable by
 anyone who knows the repo.
+
+### The house clock
+
+Both surfaces show time of day in the slate line, corrected by the server
+offset so it agrees with the countdown even when a device's clock does not.
+Minutes only — seconds would put a second moving number on a screen that has
+to stay still.

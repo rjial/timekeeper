@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { formatClock, msToNextSecond, remainingMs, widestClock } from "@/lib/timer/compute";
 import { useLiveTimer } from "@/lib/timer/use-live-timer";
+import { useWallClock } from "@/lib/timer/use-wall-clock";
 import { BARS, CONDITION } from "@/lib/timer/condition";
 import { Pips } from "./pips";
 import { useDisplayShell } from "./use-display-shell";
@@ -12,6 +13,7 @@ import "./display.css";
 export function DisplayScreen() {
   const { snapshot, offsetMs, seconds, phase, rehearsing } = useLiveTimer();
   const { idle } = useDisplayShell();
+  const wallClock = useWallClock(offsetMs);
   const wipeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,6 +70,11 @@ export function DisplayScreen() {
           {CONDITION[phase]}
         </span>
         <span className="slate__fields">
+          {wallClock ? (
+            <span className="slate__clock" aria-label="Time of day">
+              {wallClock}
+            </span>
+          ) : null}
           {captions.map((caption) => (
             <span key={caption} className="slate__caption">
               {caption}

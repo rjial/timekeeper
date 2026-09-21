@@ -11,6 +11,7 @@ import {
   writePassphrase,
 } from "@/lib/timer/passphrase";
 import { useLiveTimer } from "@/lib/timer/use-live-timer";
+import { useWallClock } from "@/lib/timer/use-wall-clock";
 import { Pips } from "../display/pips";
 import "./console.css";
 
@@ -31,8 +32,9 @@ function parseLength(input: string): number | null {
 }
 
 export function ConsoleScreen() {
-  const { snapshot, seconds, phase, rehearsing, hasSignal } = useLiveTimer();
+  const { snapshot, offsetMs, seconds, phase, rehearsing, hasSignal } = useLiveTimer();
   const controller = useMemo(() => createController(), []);
+  const wallClock = useWallClock(offsetMs);
   const [custom, setCustom] = useState("");
   const [cue, setCue] = useState("");
   const [fault, setFault] = useState<string | null>(null);
@@ -160,6 +162,11 @@ export function ConsoleScreen() {
           {CONDITION[phase]}
         </span>
         <span className="console__fields">
+          {wallClock ? (
+            <span className="console__clock" aria-label="Time of day">
+              {wallClock}
+            </span>
+          ) : null}
           <span className="console__caption">
             {rehearsing ? "Rehearsal — not wired" : "Console"}
           </span>

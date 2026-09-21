@@ -1,7 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
 import { localRemaining, readLocal, writeLocal } from "./local-store";
 import { readPassphrase } from "./passphrase";
-import { supabaseConfig } from "./supabase-source";
+import { supabaseClient, supabaseConfig } from "./supabase-source";
 
 /**
  * Every write the console can make. The room's timer is server state, so each
@@ -21,9 +20,7 @@ function createSupabaseController(config: {
   url: string;
   anonKey: string;
 }): TimerController {
-  const client = createClient(config.url, config.anonKey, {
-    auth: { persistSession: false },
-  });
+  const client = supabaseClient(config);
 
   /* The passphrase rides with every write and is checked in Postgres. */
   const call = async (fn: string, args: Record<string, unknown> = {}) => {
@@ -104,10 +101,9 @@ export function createController(): TimerController {
 export async function verifyPassphrase(candidate: string): Promise<boolean> {
   const config = supabaseConfig();
   if (!config) return true;
-  const client = createClient(config.url, config.anonKey, {
-    auth: { persistSession: false },
+  const { data, error } = await supabaseClient(config).rpc("console_unlocked", {
+    p_pass: candidate,
   });
-  const { data, error } = await client.rpc("console_unlocked", { p_pass: candidate });
   if (error) throw new Error(error.message);
   return data === true;
 }

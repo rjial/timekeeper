@@ -11,7 +11,7 @@ Scope: `/display` — the full-screen room/projector surface. Visitor mode: Oper
 
 Audience: the speaker on stage and the room, reading at ten meters in a darkened venue. They never interact. Job: know how much time is left and what condition the session is in, in under one second, without decoding anything.
 
-Content confirmed by the user: remaining time and the operator's pushed cue. Nothing else — no wall clock, no session title.
+Content confirmed by the user: remaining time and the operator's pushed cue. No session title. The wall clock was ruled out in the first round and added later at the user's request, small, in the slate line — the count keeps the frame.
 States that must be unmistakable at distance: running, paused, warning thresholds, overrun, connection lost.
 Anti-goals stated by the user: nothing may compete with the number; no animation that draws the eye during a talk.
 
@@ -25,7 +25,7 @@ OWN-WORLD: Control-room broadcast. Near-black panel ground (#07090A) with vector
 
 STORY: The speaker glances up and reads a condition before a number: on air, wind up, cut, over, hold, no signal. They believe the feed is live because one hairline is sweeping. They act by finishing on time; when a cue arrives in the bottom band, they act on that instead.
 
-FIRST VIEWPORT: A declared 12x8 ruling of the whole viewport, nothing centered by improvisation. Row 1: the tally strip, full bleed, carrying the state color. Row 2: state word in engraved caps at the left, pip mark at the right (one pip ON AIR, two WIND UP, three CUT, knockout three OVER, pause bars HOLD, chevrons NO SIGNAL) so no state is signalled by color alone. Rows 3-7: the count, measured to fill the ruling at the widest format it can reach, tabular, no reflow. Row 8: the cue band, unlit black until the operator pushes text. Bottom 2px: the clock-wipe hairline, the surface's only continuous motion, sweeping once per second as proof of sync; it stops when the timer is held and dies when the feed dies. Overrun inverts the field to on-air red with knocked-out black numerals — the one moment the screen is allowed to light the room.
+FIRST VIEWPORT: A declared 12x8 ruling of the whole viewport, nothing centered by improvisation. Row 1: the tally strip, full bleed, carrying the state color. Row 2: state word in engraved caps at the left; at the right, the house clock in tabular figures, then any field captions, then the pip mark (one pip ON AIR, two WIND UP, three CUT, knockout three OVER, pause bars HOLD, chevrons NO SIGNAL) so no state is signalled by color alone. Rows 3-7: the count, measured to fill the ruling at the widest format it can reach, tabular, no reflow. Row 8: the cue band, unlit black until the operator pushes text. Bottom 2px: the clock-wipe hairline, the surface's only continuous motion, sweeping once per second as proof of sync; it stops when the timer is held and dies when the feed dies. Overrun inverts the field to on-air red with knocked-out black numerals — the one moment the screen is allowed to light the room.
 
 FORM: Control Room Slate, candidate 1 of my ordered grounded list, taken by the user from the IMPECCABLE'S PICK card over the rolled assignment (Pit Wall, index 5). Seed key d85af6e8, code-led. Four raises carry over from the declined challengers: the state owns the whole field, not a badge (gravity-rain garden); one declared ruling places every element (Miura sheet); ground luminance is budgeted for a dark venue (darkroom safelight); one ink per state, hierarchy by scale and density (ASCII render).
 

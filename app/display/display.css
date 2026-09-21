@@ -55,6 +55,15 @@
   align-items: center;
   gap: calc(var(--gutter) * 0.9);
 }
+.slate__clock {
+  font-size: calc(var(--unit) * 0.3);
+  font-weight: 600;
+  font-stretch: 96%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+}
 .slate__caption {
   color: var(--caption);
   font-size: calc(var(--unit) * 0.2);

@@ -61,6 +61,16 @@
   align-items: center;
   gap: clamp(12px, 2vw, 24px);
 }
+.console__clock {
+  color: var(--desk);
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  font-stretch: 96%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+}
 .console__caption {
   color: var(--caption);
   font-size: var(--key);

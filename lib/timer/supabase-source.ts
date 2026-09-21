@@ -17,6 +17,21 @@ const ROW_ID = "global";
 /** How often the display re-measures its clock against the server's. */
 const RESYNC_MS = 60_000;
 
+let shared: SupabaseClient | null = null;
+
+/**
+ * The single browser client. The realtime source, the console's writes and the
+ * passphrase check all run on one connection; separate clients share an auth
+ * storage key and warn about concurrent use.
+ */
+export function supabaseClient(config: { url: string; anonKey: string }): SupabaseClient {
+  shared ??= createClient(config.url, config.anonKey, {
+    auth: { persistSession: false },
+    realtime: { params: { eventsPerSecond: 4 } },
+  });
+  return shared;
+}
+
 export function supabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -55,10 +70,7 @@ export function createSupabaseSource(config: {
 }): TimerSource {
   return {
     subscribe(listener) {
-      const client = createClient(config.url, config.anonKey, {
-        auth: { persistSession: false },
-        realtime: { params: { eventsPerSecond: 4 } },
-      });
+      const client = supabaseClient(config);
 
       let disposed = false;
       let snapshot: TimerSnapshot | null = null;
