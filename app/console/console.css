@@ -1,0 +1,359 @@
+/* Operator console — Control Room Slate, second surface.
+   One column, read at arm's length, on a phone backstage and a laptop at the
+   desk. Three decisions in order: how long, run it, change it. */
+
+.console {
+  --gutter: clamp(18px, 4vw, 40px);
+  --hairline: 1px;
+  --key: 0.8rem;
+  /* Status takes the condition's ink; the desk's own controls never do.
+     A held timer is not a disabled console. */
+  --desk: #f2f5f5;
+  --desk-dim: #aeb8bb;
+
+  display: grid;
+  grid-template-rows: 10px auto minmax(0, 1fr);
+  min-height: 100dvh;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+}
+
+/* Overrun inverts the room's screen to red; it does not invert the desk. The
+   operator still has to read small labels, and no small text clears 4.5:1 on
+   that red. The strip and the status go red, the desk stays dark. */
+.console[data-phase="over"] {
+  --field: #07090a;
+  --ink: #ff4438;
+  --tally: #e01b24;
+  --caption: #a2665f;
+  --raised: #1a0e0c;
+  --sunken: #070403;
+  --hair: #2c1714;
+}
+
+.console__tally {
+  display: flex;
+  background: var(--tally);
+}
+.console__bar {
+  flex: 1;
+}
+
+.console__line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gutter);
+  padding: clamp(14px, 2vw, 20px) var(--gutter);
+  border-bottom: var(--hairline) solid var(--hair);
+}
+.console__condition {
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.console__fields {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
+}
+.console__caption {
+  color: var(--caption);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.console__pips {
+  display: block;
+  height: 13px;
+  width: auto;
+  color: var(--ink);
+}
+
+.console__body {
+  width: min(44rem, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 28px) var(--gutter) clamp(40px, 7vw, 72px);
+}
+
+/* What the room reads, at the top, always. */
+.console__mirror {
+  display: grid;
+  gap: 0.4rem;
+}
+.console__count {
+  font-size: clamp(3.6rem, 15vw, 6rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+  line-height: 0.82;
+}
+.console__reads {
+  /* Two lines are reserved whether or not a cue is up, so an arriving cue
+     never moves the button underneath it. */
+  min-height: 2.4em;
+  font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+  font-weight: 600;
+  font-stretch: 94%;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.console__reads--empty {
+  color: var(--caption);
+}
+.console__recovery {
+  margin: 0.5rem 0 0;
+  color: var(--tally-caution);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.console__fault {
+  margin: 0 0 0.75rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--raised);
+  border-left: 1px solid var(--tally-caution);
+  color: var(--tally-caution);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Run it. */
+.console__run {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: 1fr auto;
+  margin-top: clamp(14px, 2.4vw, 20px);
+}
+.console__primary {
+  min-height: clamp(88px, 12vh, 112px);
+  padding: 1rem;
+  /* Start is an action, not a state: it keeps the affirmative green on every
+     condition, including hold, where the state ink would erase it. */
+  background: var(--tally-clear);
+  border: 0;
+  color: #06120b;
+  cursor: pointer;
+  font: inherit;
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.console__primary:hover:not(:disabled) {
+  background: var(--desk);
+}
+.console__primary:active:not(:disabled) {
+  background: #06120b;
+  color: var(--tally-clear);
+}
+.console__primary:focus-visible {
+  outline: 3px solid var(--desk);
+  outline-offset: -8px;
+}
+.console__secondary {
+  min-width: clamp(96px, 22vw, 132px);
+  padding: 1rem;
+  background: none;
+  border: var(--hairline) solid var(--hair);
+  color: var(--desk);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.console__secondary:hover:not(:disabled) {
+  border-color: var(--desk);
+  background: var(--raised);
+}
+
+.console__block {
+  margin-top: clamp(20px, 3.4vw, 30px);
+}
+.console__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--desk-dim);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.console__keys {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  margin-top: 0.8rem;
+}
+.console__keys--cues {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+/* Clear removes rather than sends, so it takes its own full row instead of
+   orphaning at the end of the canned four. */
+@media (max-width: 720px) {
+  .console__keys--cues {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .console__keys--cues > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+.console__plate {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 0.8rem 0.75rem;
+  background: none;
+  border: var(--hairline) solid var(--hair);
+  color: var(--desk);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.console__plate:hover:not(:disabled) {
+  border-color: var(--desk);
+  background: var(--raised);
+}
+.console__plate:active:not(:disabled) {
+  background: var(--desk);
+  color: var(--field);
+}
+.console__plate--current {
+  background: var(--desk);
+  border-color: var(--desk);
+  color: var(--field);
+}
+.console__plate:disabled,
+.console__primary:disabled,
+.console__secondary:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.console__primary:disabled {
+  background: var(--hair);
+  color: var(--desk-dim);
+  opacity: 1;
+}
+
+.console__form {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+.console__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0.8rem 1.1rem;
+  background: var(--sunken);
+  border: var(--hairline) solid var(--hair);
+  color: var(--desk);
+  font: inherit;
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.console__input:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.console__input::placeholder {
+  color: #93a0a4;
+}
+
+.console--off .console__note,
+.console--off .console__head {
+  opacity: 0.32;
+}
+.console__note {
+  margin: 0.8rem 0 0;
+  color: var(--desk-dim);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* The gate. The desk is behind it; the room's display never is. */
+.console__gate {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  width: min(30rem, 100%);
+  margin: 0 auto;
+  padding: clamp(40px, 12vh, 120px) var(--gutter) 0;
+}
+.console__gate-head {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  font-stretch: 100%;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.console__gate-note {
+  margin: 0;
+  color: var(--desk-dim);
+  font-size: var(--key);
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.console__gate .console__form {
+  margin-top: 0.6rem;
+}
+.console__gate .console__input {
+  letter-spacing: 0.3em;
+  text-transform: none;
+}
+.console__lock {
+  padding: 0.35rem 0.6rem;
+  background: none;
+  border: var(--hairline) solid var(--hair);
+  color: var(--desk-dim);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.console__lock:hover {
+  border-color: var(--desk);
+  color: var(--desk);
+}

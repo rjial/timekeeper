@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
+/* Control room. The product lives in darkened venues; the palette is chosen
+   for that room, not for a category default. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --field: #07090a;
+  --panel: #0b1013;
+  --graticule: #131a1c;
+  --ink: #f2f5f5;
+  --ink-dim: #7a8a8e;
+  --tally-clear: #0ba84a;
+  --tally-caution: #ffa400;
+  --tally-onair: #e01b24;
+
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-field: var(--field);
+  --color-panel: var(--panel);
+  --color-graticule: var(--graticule);
+  --color-ink: var(--ink);
+  --color-ink-dim: var(--ink-dim);
+  --color-tally-clear: var(--tally-clear);
+  --color-tally-caution: var(--tally-caution);
+  --color-tally-onair: var(--tally-onair);
+  --font-sans: var(--font-archivo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* One ink per condition. Hierarchy comes from scale and density, never hue. */
+[data-phase="ready"] {
+  --raised: #101a1e;
+  --sunken: #050708;
+  --hair: #1b2427;
+  --field: #07090a;
+  --ink: #e2e8e9;
+  --tally: #0b6b33;
+  --caption: #7a8a8e;
+}
+[data-phase="onair"] {
+  --raised: #101a1e;
+  --sunken: #050708;
+  --hair: #1b2427;
+  --field: #07090a;
+  --ink: #f2f5f5;
+  --tally: #0ba84a;
+  --caption: #7a8a8e;
+}
+[data-phase="windup"] {
+  --raised: #191308;
+  --sunken: #060504;
+  --hair: #2a2213;
+  --field: #07090a;
+  --ink: #ffb020;
+  --tally: #ffa400;
+  --caption: #9a8656;
+}
+[data-phase="cut"] {
+  --raised: #1a0e0c;
+  --sunken: #070403;
+  --hair: #2c1714;
+  --field: #07090a;
+  --ink: #ff5a48;
+  --tally: #e01b24;
+  --caption: #b5776f;
+}
+[data-phase="over"] {
+  --raised: #c8161e;
+  --sunken: #c8161e;
+  --hair: #7d0c14;
+  --field: #e01b24;
+  --ink: #0a0405;
+  --tally: #0a0405;
+  --caption: #5c0b10;
+}
+[data-phase="hold"] {
+  --raised: #101a1e;
+  --sunken: #050708;
+  --hair: #1b2427;
+  --field: #07090a;
+  --ink: #7a8a8e;
+  --tally: #131a1c;
+  --caption: #808e92;
+}
+[data-phase="nosignal"] {
+  --raised: #101a1e;
+  --sunken: #050708;
+  --hair: #1b2427;
+  --field: #07090a;
+  --ink: #6e7b7f;
+  --tally: transparent;
+  --caption: #808e92;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+}
+
+/* The surfaces the browser draws still belong to the design. */
+::selection {
+  background: var(--tally-clear);
+  color: var(--field);
+}
+
+:focus-visible {
+  outline: 2px solid var(--tally-clear);
+  outline-offset: 3px;
+}
+
+* {
+  caret-color: var(--tally-clear);
+  scrollbar-color: var(--graticule) var(--field);
+  scrollbar-width: thin;
 }

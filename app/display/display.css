@@ -1,0 +1,174 @@
+/* Control Room Slate — the room-facing surface.
+   A declared 12 x 8 ruling: four horizontal bands of 0.55 / 1 / 5.05 / 1.4
+   units, gutters of half a column. Nothing here is centred by improvisation. */
+
+.slate {
+  /* The ruling follows the shorter side, so a portrait phone gets the same
+     slate rather than a cropped one. */
+  --unit: min(calc(100dvh / 8), calc(100vw / 9));
+  --gutter: calc(100vw / 24);
+  --rule: max(1px, calc(100dvh / 900));
+
+  position: relative;
+  display: grid;
+  grid-template-rows:
+    calc(var(--unit) * 0.55)
+    calc(var(--unit) * 1)
+    1fr
+    calc(var(--unit) * 1.4);
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  transition: none;
+}
+
+/* Row 1 — the tally strip. Lit, not decorated. */
+.slate__tally {
+  background: var(--tally);
+  display: flex;
+}
+.slate__bar {
+  flex: 1;
+}
+
+/* Row 2 — the slate line: condition at the left, fields and pips at the right. */
+.slate__line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gutter);
+  padding: 0 var(--gutter);
+}
+.slate__condition {
+  font-size: calc(var(--unit) * 0.4);
+  font-weight: 600;
+  font-stretch: 92%;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.slate__fields {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gutter) * 0.9);
+}
+.slate__caption {
+  color: var(--caption);
+  font-size: calc(var(--unit) * 0.2);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.26em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.slate__pips {
+  display: block;
+  height: calc(var(--unit) * 0.34);
+  width: auto;
+  color: var(--ink);
+}
+
+/* Row 3 — the count. Measured to the widest string it can reach, so it never
+   resizes or reflows while a talk is running. */
+.slate__count {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--gutter);
+  min-height: 0;
+}
+.slate__digits,
+.slate__probe--count {
+  font-weight: 700;
+  font-stretch: 112%;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: pre;
+}
+.slate__digits {
+  transform: translateY(-0.012em);
+}
+.slate__probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+  font-size: 100px;
+  white-space: pre;
+}
+
+/* Row 4 — the cue band. Reserved always, black until the operator pushes text,
+   so an arriving cue never moves the count. */
+.slate__cue {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--gutter);
+  background: #050708;
+  border-top: var(--rule) solid #131a1c;
+  overflow: hidden;
+}
+.slate[data-phase="over"] .slate__cue {
+  background: #e01b24;
+  border-top-color: #7d0c14;
+}
+.slate__cue-text,
+.slate__probe--cue {
+  color: var(--ink);
+  font-weight: 600;
+  font-stretch: 96%;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The clock wipe: the only continuous motion on the surface, and the proof
+   that the feed is alive. It stops when the timer is held and dies with the
+   signal. */
+.slate__wipe {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: calc(var(--rule) * 2);
+  width: 100%;
+  background: var(--tally);
+  transform-origin: left center;
+  animation: slate-wipe 1s linear infinite;
+}
+.slate[data-phase="ready"] .slate__wipe,
+.slate[data-phase="hold"] .slate__wipe,
+.slate[data-phase="nosignal"] .slate__wipe {
+  animation: none;
+  transform: scaleX(1);
+  background: #131a1c;
+}
+
+@keyframes slate-wipe {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slate__wipe {
+    animation-timing-function: steps(4, end);
+  }
+}
+
+.slate--idle {
+  cursor: none;
+}
